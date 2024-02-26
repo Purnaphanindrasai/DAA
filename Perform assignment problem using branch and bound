@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+
+#define N 4 // Number of tasks and agents
+
+// Function to find the minimum cost assignment using Branch and Bound
+void assignTask(int costMatrix[N][N], int assignment[N]) {
+    int result[N]; // Stores the final assignment
+    bool assigned[N]; // Tracks if a task has been assigned
+
+    // Initialize assigned array to false
+    for (int i = 0; i < N; i++)
+        assigned[i] = false;
+
+    // Initialize result array
+    for (int i = 0; i < N; i++)
+        result[i] = -1;
+
+    // Start from task 0 and assign it to agent 0
+    assigned[0] = true;
+    result[0] = 0;
+
+    int taskCount = 1; // Number of tasks assigned
+
+    // Loop until all tasks are assigned
+    while (taskCount < N) {
+        int minCost = INT_MAX;
+        int minIndex = -1;
+
+        // Find the agent with the minimum cost to assign the next task
+        for (int task = 0; task < N; task++) {
+            if (!assigned[task] && costMatrix[task][result[taskCount - 1]] < minCost) {
+                minCost = costMatrix[task][result[taskCount - 1]];
+                minIndex = task;
+            }
+        }
+
+        // Assign the task to the agent with the minimum cost
+        assigned[minIndex] = true;
+        result[taskCount] = minIndex;
+        taskCount++;
+    }
+
+    // Print the final assignment
+    printf("Assigned tasks:\n");
+    for (int i = 0; i < N; i++) {
+        printf("Task %d assigned to Agent %d\n", i, result[i]);
+        assignment[i] = result[i];
+    }
+}
+
+int main() {
+    int costMatrix[N][N] = {
+        {9, 2, 7, 8},
+        {6, 4, 3, 7},
+        {5, 8, 1, 8},
+        {7, 6, 9, 4}
+    };
+
+    int assignment[N]; // Array to store assignments
+
+    assignTask(costMatrix, assignment);
+
+    return 0;
+}
