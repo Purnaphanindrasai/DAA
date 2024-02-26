@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define CONTAINER_CAPACITY 1000 // Capacity of the container
+#define NUM_BOXES 5 // Number of boxes to be loaded
+
+// Structure to represent a box
+typedef struct {
+    int id; // Box ID
+    int length; // Length of the box
+    int width; // Width of the box
+    int height; // Height of the box
+    int weight; // Weight of the box
+} Box;
+
+// Function to load boxes into the container
+void loadBoxes(Box boxes[], int numBoxes) {
+    int totalVolume = 0;
+    int totalWeight = 0;
+
+    printf("Loading boxes into the container...\n");
+    printf("BoxID\tLength\tWidth\tHeight\tWeight\n");
+
+    for (int i = 0; i < numBoxes; i++) {
+        // Check if adding the current box exceeds container capacity
+        if (totalVolume + boxes[i].length * boxes[i].width * boxes[i].height > CONTAINER_CAPACITY) {
+            printf("Container is full. Cannot add more boxes.\n");
+            break;
+        }
+
+        // Update total volume and weight
+        totalVolume += boxes[i].length * boxes[i].width * boxes[i].height;
+        totalWeight += boxes[i].weight;
+
+        // Print the details of the loaded box
+        printf("%d\t%d\t%d\t%d\t%d\n", boxes[i].id, boxes[i].length, boxes[i].width, boxes[i].height, boxes[i].weight);
+    }
+
+    // Print total volume and weight loaded into the container
+    printf("Total volume loaded: %d\n", totalVolume);
+    printf("Total weight loaded: %d\n", totalWeight);
+}
+
+int main() {
+    // Example boxes
+    Box boxes[NUM_BOXES] = {
+        {1, 20, 10, 15, 50},
+        {2, 25, 15, 10, 40},
+        {3, 15, 12, 18, 35},
+        {4, 30, 20, 12, 60},
+        {5, 18, 18, 20, 45}
+    };
+
+    // Load the boxes into the container
+    loadBoxes(boxes, NUM_BOXES);
+
+    return 0;
+}
