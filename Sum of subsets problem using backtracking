@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+#define MAX_SIZE 100
+
+int set[MAX_SIZE]; // Input set
+int subset[MAX_SIZE]; // Current subset
+int n; // Size of the set
+int targetSum; // Target sum
+
+// Function to print subsets
+void printSubset(int size) {
+    printf("{ ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", subset[i]);
+    }
+    printf("}\n");
+}
+
+// Function to find subsets with given sum using backtracking
+void findSubsetsWithSum(int index, int sum, int size) {
+    if (sum == targetSum) {
+        printSubset(size);
+        return;
+    }
+
+    for (int i = index; i < n; i++) {
+        if (sum + set[i] <= targetSum) {
+            subset[size] = set[i];
+            findSubsetsWithSum(i + 1, sum + set[i], size + 1);
+        }
+    }
+}
+
+int main() {
+    printf("Enter the number of elements in the set: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements of the set:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &set[i]);
+    }
+
+    printf("Enter the target sum: ");
+    scanf("%d", &targetSum);
+
+    printf("Subsets with sum equal to %d are:\n", targetSum);
+    findSubsetsWithSum(0, 0, 0);
+
+    return 0;
+}
