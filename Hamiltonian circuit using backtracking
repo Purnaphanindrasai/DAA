@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define V 5 // Number of vertices
+
+// Function to check if vertex v can be added at index 'pos' in the Hamiltonian Cycle constructed so far
+bool isSafe(int v, bool graph[V][V], int path[], int pos) {
+    // Check if this vertex is an adjacent vertex of the previously added vertex
+    if (graph[path[pos - 1]][v] == 0)
+        return false;
+
+    // Check if the vertex has already been included
+    for (int i = 0; i < pos; i++)
+        if (path[i] == v)
+            return false;
+
+    return true;
+}
+
+// Recursive utility function to solve Hamiltonian cycle problem
+bool hamCycleUtil(bool graph[V][V], int path[], int pos) {
+    // If all vertices are included in the Hamiltonian Cycle
+    if (pos == V) {
+        // And if there is an edge from the last included vertex to the first vertex
+        if (graph[path[pos - 1]][path[0]] == 1)
+            return true;
+        else
+            return false;
+    }
+
+    // Try different vertices as the next candidate in Hamiltonian Cycle
+    for (int v = 1; v < V; v++) {
+        // Check if this vertex can be added to the Hamiltonian Cycle
+        if (isSafe(v, graph, path, pos)) {
+            path[pos] = v;
+
+            // Recur to construct the rest of the Hamiltonian Cycle
+            if (hamCycleUtil(graph, path, pos + 1) == true)
+                return true;
+
+            // If adding vertex v doesn't lead to a solution, then remove it
+            path[pos] = -1;
+        }
+    }
+
+    // If no vertex can be added to the Hamiltonian Cycle
+    return false;
+}
+
+// Function to solve the Hamiltonian Cycle problem
+bool hamCycle(bool graph[V][V]) {
+    int path[V];
+    for (int i = 0; i < V; i++)
+        path[i] = -1;
+
+    // Start from the 0th vertex as the starting point for the Hamiltonian Cycle
+    path[0] = 0;
+
+    // Call the recursive helper function to find the Hamiltonian Cycle
+    if (hamCycleUtil(graph, path, 1) == false) {
+        printf("Solution does not exist\n");
+        return false;
+    }
+
+    // Print the Hamiltonian Cycle
+    printf("Hamiltonian Cycle exists: \n");
+    for (int i = 0; i < V; i++)
+        printf("%d ", path[i]);
+    printf("%d ", path[0]); // Include the starting vertex again to form a cycle
+
+    return true;
+}
+
+int main() {
+    bool graph[V][V] = {
+        {0, 1, 0, 1, 0},
+        {1, 0, 1, 1, 1},
+        {0, 1, 0, 0, 1},
+        {1, 1, 0, 0, 1},
+        {0, 1, 1, 1, 0}
+    };
+
+    hamCycle(graph);
+
+    return 0;
+}
