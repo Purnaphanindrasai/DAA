@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+// Function to list all factors of a number n
+void listFactors(int n, int divisor) {
+    // Base case: if divisor becomes greater than n, return
+    if (divisor > n)
+        return;
+
+    // If n is divisible by the current divisor, print it
+    if (n % divisor == 0)
+        printf("%d ", divisor);
+
+    // Recursively call the function with the next divisor
+    listFactors(n, divisor + 1);
+}
+
+int main() {
+    int n;
+
+    // Input the number from the user
+    printf("Enter a positive integer: ");
+    scanf("%d", &n);
+
+    // Check if n is non-positive
+    if (n <= 0) {
+        printf("Invalid input. Please enter a positive integer.\n");
+        return 0;
+    }
+
+    // Print the factors of n
+    printf("Factors of %d are: ", n);
+    listFactors(n, 1);
+
+    return 0;
+}
