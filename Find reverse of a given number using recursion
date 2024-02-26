@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+// Function to find reverse of a number using recursion
+int reverseNumber(int num) {
+    static int reversedNum = 0; // Static variable to keep track of reversed number
+    
+    // Base case: if the number becomes 0, return the reversed number
+    if (num == 0) 
+        return reversedNum;
+    
+    // Recursive call: extract the last digit of num and append it to reversedNum
+    reversedNum = reversedNum * 10 + num % 10;
+    
+    // Recursive call with the remaining digits of num
+    return reverseNumber(num / 10);
+}
+
+int main() {
+    int num;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+    int reversed = reverseNumber(num);
+    printf("Reverse of %d is %d\n", num, reversed);
+    return 0;
+}
